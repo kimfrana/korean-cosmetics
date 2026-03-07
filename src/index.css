@@ -1,0 +1,422 @@
+@import "tailwindcss";
+
+@theme {
+  --color-pearl: #FEFEFE;
+  --color-rose: #F4A6CD;
+  --color-aqua: #7DD3FC;
+  --color-ocean: #0284C7;
+  --color-mint: #A7F3D0;
+  --color-lavender: #C7D2FE;
+  --color-charcoal: #1F2937;
+  --color-slate: #475569;
+  
+  --font-family-display: "Playfair Display", serif;
+  --font-family-body: "Poppins", sans-serif;
+}
+
+/* Garantir que as cores customizadas sejam aplicadas */
+@layer base {
+  :root {
+    --color-pearl: #FEFEFE;
+    --color-rose: #F4A6CD;
+    --color-aqua: #7DD3FC;
+    --color-ocean: #0284C7;
+    --color-mint: #A7F3D0;
+    --color-lavender: #C7D2FE;
+    --color-charcoal: #1F2937;
+    --color-slate: #475569;
+  }
+}
+
+/* Utilitários para responsividade */
+@layer utilities {
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  
+  /* Cores customizadas - forçando aplicação */
+  .text-aqua, 
+  a.text-aqua, 
+  span.text-aqua { color: #7DD3FC !important; }
+  
+  .text-ocean, 
+  a.text-ocean, 
+  span.text-ocean { color: #0284C7 !important; }
+  
+  .text-mint { color: #A7F3D0 !important; }
+  .text-lavender { color: #C7D2FE !important; }
+  .text-charcoal { color: #1F2937 !important; }
+  .text-slate { color: #475569 !important; }
+  .text-rose { color: #F4A6CD !important; }
+  .text-pearl { color: #FEFEFE !important; }
+  
+  /* Hover states específicos */
+  .hover\:text-ocean:hover,
+  a.hover\:text-ocean:hover { color: #0284C7 !important; }
+  
+  .hover\:text-aqua:hover,
+  a.hover\:text-aqua:hover { color: #7DD3FC !important; }
+  
+  .bg-aqua { background-color: #7DD3FC !important; }
+  .bg-ocean { background-color: #0284C7 !important; }
+  .bg-mint { background-color: #A7F3D0 !important; }
+  .bg-lavender { background-color: #C7D2FE !important; }
+  .bg-charcoal { background-color: #1F2937 !important; }
+  .bg-slate { background-color: #475569 !important; }
+  .bg-rose { background-color: #F4A6CD !important; }
+  .bg-pearl { background-color: #FEFEFE !important; }
+  
+  .border-aqua { border-color: #7DD3FC !important; }
+  .border-ocean { border-color: #0284C7 !important; }
+  .border-mint { border-color: #A7F3D0 !important; }
+  .border-lavender { border-color: #C7D2FE !important; }
+  .border-charcoal { border-color: #1F2937 !important; }
+  .border-slate { border-color: #475569 !important; }
+  .border-rose { border-color: #F4A6CD !important; }
+  .border-pearl { border-color: #FEFEFE !important; }
+  
+  /* Cores com transparência */
+  .bg-aqua\/10 { background-color: rgba(125, 211, 252, 0.1) !important; }
+  .bg-aqua\/5 { background-color: rgba(125, 211, 252, 0.05) !important; }
+  .bg-ocean\/10 { background-color: rgba(2, 132, 199, 0.1) !important; }
+  .bg-ocean\/5 { background-color: rgba(2, 132, 199, 0.05) !important; }
+  .hover\:bg-aqua\/5:hover { background-color: rgba(125, 211, 252, 0.05) !important; }
+  .hover\:bg-aqua\/10:hover { background-color: rgba(125, 211, 252, 0.1) !important; }
+  .hover\:bg-ocean\/5:hover { background-color: rgba(2, 132, 199, 0.05) !important; }
+  .hover\:bg-ocean\/10:hover { background-color: rgba(2, 132, 199, 0.1) !important; }
+  
+  /* Gradientes suaves - sem transparência */
+  .bg-gradient-mint-ocean {
+    background: linear-gradient(135deg, #A7F3D0 0%, #7DD3FC 50%, #0284C7 100%) !important;
+  }
+  
+  .bg-gradient-mint-soft {
+    background: linear-gradient(135deg, #A7F3D0 0%, #7DD3FC 100%) !important;
+  }
+  
+  .bg-gradient-border-mint {
+    background: linear-gradient(135deg, #A7F3D0 0%, #7DD3FC 70%, #0284C7 100%) !important;
+  }
+  
+  /* Gradiente suave para background - cima para baixo */
+  .bg-gradient-soft-vertical {
+    background: linear-gradient(to bottom, rgba(254, 254, 254, 1) 0%, rgba(167, 243, 208, 0.3) 30%, rgba(125, 211, 252, 0.2) 70%, rgba(254, 254, 254, 0.9) 100%) !important;
+  }
+  
+  .hover\:bg-gradient-mint-ocean-hover:hover {
+    background: linear-gradient(135deg, #7DD3FC 0%, #0284C7 50%, #A7F3D0 100%) !important;
+  }
+  
+  /* Correção para botões flutuantes */
+  .floating-button {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+  }
+  
+  .floating-button:hover {
+    border-color: transparent !important;
+    background: transparent !important;
+  }
+  
+  .floating-button:focus,
+  .floating-button:focus-visible {
+    outline: none !important;
+  }
+}
+
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  font-weight: 500;
+  /* color: #F4A6CD; */
+  text-decoration: inherit;
+}
+a:hover {
+  /* color: #F4A6CD; */
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  width: 100%;
+  background-color: #FEFEFE; /* pearl - mais branco */
+  color: #1F2937; /* charcoal - muito mais escuro para melhor contraste */
+  font-family: 'Poppins', sans-serif; /* font-body */
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #F4A6CD;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #F4A6CD;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+  
+  /* Scrollbar customizada seguindo padrões do projeto */
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: #A7F3D0 rgba(125, 211, 252, 0.1);
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(254, 254, 254, 0.8);
+    border-radius: 10px;
+    margin: 2px;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #A7F3D0 0%, #7DD3FC 50%, #0284C7 100%);
+    border-radius: 10px;
+    border: 2px solid rgba(254, 254, 254, 0.8);
+    min-height: 30px;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #0284C7 0%, #7DD3FC 50%, #A7F3D0 100%);
+    border: 2px solid rgba(254, 254, 254, 1);
+    box-shadow: 0 0 10px rgba(2, 132, 199, 0.4);
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-corner {
+    background: rgba(254, 254, 254, 0.8);
+  }
+  
+  /* Forçar aplicação da scrollbar customizada */
+  div.custom-scrollbar::-webkit-scrollbar {
+    width: 12px !important;
+    height: 12px !important;
+  }
+  
+  div.custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(254, 254, 254, 0.8) !important;
+    border-radius: 10px !important;
+    margin: 2px !important;
+  }
+  
+  div.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #A7F3D0 0%, #7DD3FC 50%, #0284C7 100%) !important;
+    border-radius: 10px !important;
+    border: 2px solid rgba(254, 254, 254, 0.8) !important;
+    min-height: 30px !important;
+  }
+  
+  div.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #0284C7 0%, #7DD3FC 50%, #A7F3D0 100%) !important;
+    border: 2px solid rgba(254, 254, 254, 1) !important;
+    box-shadow: 0 0 10px rgba(2, 132, 199, 0.4) !important;
+  }
+  
+  /* Scrollbar específica para modal */
+  .modal-scrollbar {
+    scrollbar-width: thin !important;
+    scrollbar-color: #A7F3D0 rgba(254, 254, 254, 0.3) !important;
+  }
+  
+  .modal-scrollbar::-webkit-scrollbar {
+    width: 14px !important;
+    background: transparent !important;
+  }
+  
+  .modal-scrollbar::-webkit-scrollbar-track {
+    background: rgba(254, 254, 254, 0.5) !important;
+    border-radius: 12px !important;
+    margin: 4px !important;
+    border: 1px solid rgba(167, 243, 208, 0.2) !important;
+  }
+  
+  .modal-scrollbar::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #A7F3D0 0%, #7DD3FC 50%, #0284C7 100%) !important;
+    border-radius: 12px !important;
+    border: 2px solid rgba(254, 254, 254, 0.9) !important;
+    min-height: 40px !important;
+    box-shadow: 0 2px 4px rgba(2, 132, 199, 0.2) !important;
+  }
+  
+  .modal-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #0284C7 0%, #7DD3FC 30%, #A7F3D0 100%) !important;
+    border: 2px solid #FEFEFE !important;
+    box-shadow: 0 4px 12px rgba(2, 132, 199, 0.4) !important;
+    transform: scale(1.05) !important;
+  }
+  
+  .modal-scrollbar::-webkit-scrollbar-thumb:active {
+    background: linear-gradient(135deg, #0284C7 0%, #A7F3D0 100%) !important;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+  }
+  
+  /* Scrollbar global para toda a aplicação */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #A7F3D0 rgba(254, 254, 254, 0.3);
+  }
+  
+  *::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+    background: transparent;
+  }
+  
+  *::-webkit-scrollbar-track {
+    background: rgba(254, 254, 254, 0.4);
+    border-radius: 10px;
+    margin: 2px;
+    border: 1px solid rgba(167, 243, 208, 0.15);
+  }
+  
+  *::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #A7F3D0 0%, #7DD3FC 50%, #0284C7 100%);
+    border-radius: 10px;
+    border: 2px solid rgba(254, 254, 254, 0.8);
+    min-height: 30px;
+    box-shadow: 0 1px 3px rgba(2, 132, 199, 0.15);
+  }
+  
+  *::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #0284C7 0%, #7DD3FC 40%, #A7F3D0 100%);
+    border: 2px solid #FEFEFE;
+    box-shadow: 0 2px 8px rgba(2, 132, 199, 0.3);
+    transform: scale(1.02);
+  }
+  
+  *::-webkit-scrollbar-thumb:active {
+    background: linear-gradient(135deg, #0284C7 0%, #A7F3D0 100%);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  
+  *::-webkit-scrollbar-corner {
+    background: rgba(254, 254, 254, 0.6);
+    border-radius: 0 0 10px 0;
+  }
+  
+  /* Scrollbar específica para body e html */
+  html, body {
+    scrollbar-width: thin;
+    scrollbar-color: #A7F3D0 rgba(254, 254, 254, 0.2);
+  }
+  
+  html::-webkit-scrollbar, body::-webkit-scrollbar {
+    width: 14px;
+    background: rgba(254, 254, 254, 0.1);
+  }
+  
+  html::-webkit-scrollbar-track, body::-webkit-scrollbar-track {
+    background: linear-gradient(to bottom, rgba(254, 254, 254, 0.3), rgba(167, 243, 208, 0.1));
+    border-radius: 0;
+  }
+  
+  html::-webkit-scrollbar-thumb, body::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #A7F3D0 0%, #7DD3FC 50%, #0284C7 100%);
+    border-radius: 12px;
+    border: 3px solid rgba(254, 254, 254, 0.9);
+    min-height: 50px;
+    box-shadow: 0 2px 6px rgba(2, 132, 199, 0.2);
+  }
+  
+  html::-webkit-scrollbar-thumb:hover, body::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #0284C7 0%, #7DD3FC 30%, #A7F3D0 100%);
+    border: 3px solid #FEFEFE;
+    box-shadow: 0 4px 12px rgba(2, 132, 199, 0.4);
+  }
+  
+  /* Classe específica para componentes da aplicação Koreaquamarine */
+  .koreaquamarine-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: #A7F3D0 rgba(254, 254, 254, 0.3);
+  }
+  
+  .koreaquamarine-scrollbar::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+    background: transparent;
+  }
+  
+  .koreaquamarine-scrollbar::-webkit-scrollbar-track {
+    background: rgba(254, 254, 254, 0.5);
+    border-radius: 10px;
+    margin: 2px;
+    border: 1px solid rgba(167, 243, 208, 0.2);
+  }
+  
+  .koreaquamarine-scrollbar::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #A7F3D0 0%, #7DD3FC 50%, #0284C7 100%);
+    border-radius: 10px;
+    border: 2px solid rgba(254, 254, 254, 0.9);
+    min-height: 30px;
+    box-shadow: 0 1px 4px rgba(2, 132, 199, 0.2);
+  }
+  
+  .koreaquamarine-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #0284C7 0%, #7DD3FC 40%, #A7F3D0 100%);
+    border: 2px solid #FEFEFE;
+    box-shadow: 0 3px 10px rgba(2, 132, 199, 0.35);
+    transform: scale(1.05);
+  }
+  
+  .koreaquamarine-scrollbar::-webkit-scrollbar-thumb:active {
+    background: linear-gradient(135deg, #0284C7 0%, #A7F3D0 100%);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.15);
+    transform: scale(0.98);
+  }
+  
+  .koreaquamarine-scrollbar::-webkit-scrollbar-corner {
+    background: rgba(254, 254, 254, 0.7);
+    border-radius: 0 0 10px 0;
+  }
+}
