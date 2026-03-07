@@ -9,15 +9,19 @@ export default function AdminLogin() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   if (isAdminAuthenticated()) {
     return <Navigate to="/admin/products" replace />;
   }
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setError("");
+    setIsLoading(true);
 
-    const success = loginAdmin(username.trim(), password);
+    const success = await loginAdmin(username.trim(), password);
+    setIsLoading(false);
 
     if (!success) {
       setError("Usuário ou senha inválidos.");
@@ -63,9 +67,10 @@ export default function AdminLogin() {
 
           <button
             type="submit"
+            disabled={isLoading}
             className="w-full bg-ocean text-white py-2.5 rounded-full font-medium hover:bg-aqua hover:text-charcoal transition"
           >
-            Entrar
+            {isLoading ? "Entrando..." : "Entrar"}
           </button>
         </form>
       </div>

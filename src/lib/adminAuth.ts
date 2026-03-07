@@ -1,22 +1,34 @@
-const ADMIN_AUTH_KEY = "koreaquamarine_admin_auth";
+import { apiRequest } from "./api";
 
-const ADMIN_USER = import.meta.env.VITE_ADMIN_USER ?? "admin";
-const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD ?? "admin123";
+const ADMIN_TOKEN_KEY = "koreaquamarine_admin_token";
 
-export function loginAdmin(username: string, password: string): boolean {
-  const isValid = username === ADMIN_USER && password === ADMIN_PASSWORD;
+interface LoginResponse {
+  accessToken: string;
+}
 
-  if (isValid) {
-    localStorage.setItem(ADMIN_AUTH_KEY, "true");
+export async function loginAdmin(username: string, password: string): Promise<boolean> {
+  try {
+    const data = await apiRequest<LoginResponse>("/auth/login", {
+      method: "POST",
+      body: JSON.stringify({ username, password })
+    });
+
+    localStorage.setItem(ADMIN_TOKEN_KEY, data.accessToken);
+    return true;
+  } catch {
+    localStorage.removeItem(ADMIN_TOKEN_KEY);
+    return false;
   }
-
-  return isValid;
 }
 
 export function logoutAdmin(): void {
-  localStorage.removeItem(ADMIN_AUTH_KEY);
+  localStorage.removeItem(ADMIN_TOKEN_KEY);
 }
 
 export function isAdminAuthenticated(): boolean {
-  return localStorage.getItem(ADMIN_AUTH_KEY) === "true";
+  return Boolean(localStorage.getItem(ADMIN_TOKEN_KEY));
+}
+
+export function getAdminToken(): string | null {
+  return localStorage.getItem(ADMIN_TOKEN_KEY);
 }

@@ -67,7 +67,12 @@ export default function Home() {
   const [produtos, setProdutos] = useState<ProductView[]>([]);
 
   useEffect(() => {
-    setProdutos(getProductsForView());
+    const loadProducts = async () => {
+      const data = await getProductsForView();
+      setProdutos(data);
+    };
+
+    void loadProducts();
   }, []);
 
   // Auto-play do carrossel

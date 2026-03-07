@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route, useLocation, Navigate } from "react-router-dom";
+import { useEffect } from "react";
 import Home from "./pages/Home";
 import Products from "./pages/Products";
 import About from "./pages/About";
@@ -11,6 +12,7 @@ import AdminLogin from "./pages/admin/AdminLogin";
 import AdminProducts from "./pages/admin/AdminProducts";
 import ProtectedRoute from "./components/admin/ProtectedRoute";
 import { isAdminAuthenticated } from "./lib/adminAuth";
+import { checkApiHealth } from "./lib/health";
 
 function AppContent() {
   const location = useLocation();
@@ -52,6 +54,18 @@ function AppContent() {
 }
 
 function App() {
+  useEffect(() => {
+    const runHealthCheck = async () => {
+      const isHealthy = await checkApiHealth();
+
+      if (!isHealthy) {
+        console.warn("Backend API indisponível. Verifique se o serviço está rodando em VITE_API_URL.");
+      }
+    };
+
+    void runHealthCheck();
+  }, []);
+
   return (
     <BrowserRouter>
       <ScrollToTop />

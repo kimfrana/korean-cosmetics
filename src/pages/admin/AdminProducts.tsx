@@ -1,10 +1,12 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { logoutAdmin } from "../../lib/adminAuth";
 import {
-  getStoredProducts,
-  saveProducts,
+  getProducts,
+  createProduct,
+  updateProduct,
+  deleteProduct,
   productImageOptions
 } from "../../lib/productStore";
 import type { ProductImageKey, ProductRecord } from "../../lib/productStore";
@@ -64,8 +66,26 @@ function toForm(product: ProductRecord): ProductFormState {
 
 export default function AdminProducts() {
   const navigate = useNavigate();
-  const [products, setProducts] = useState<ProductRecord[]>(() => getStoredProducts());
+  const [products, setProducts] = useState<ProductRecord[]>([]);
   const [form, setForm] = useState<ProductFormState>(initialForm);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const loadProducts = async () => {
+      try {
+        setIsLoading(true);
+        const data = await getProducts();
+        setProducts(data);
+      } catch {
+        setError("Não foi possível carregar os produtos.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    void loadProducts();
+  }, []);
 
   const sortedProducts = useMemo(
     () => [...products].sort((a, b) => a.nome.localeCompare(b.nome)),
@@ -74,16 +94,12 @@ export default function AdminProducts() {
 
   const resetForm = () => setForm(initialForm);
 
-  const persistProducts = (nextProducts: ProductRecord[]) => {
-    setProducts(nextProducts);
-    saveProducts(nextProducts);
-  };
-
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setError("");
+    setIsLoading(true);
 
-    const payload: ProductRecord = {
-      id: form.id ?? (products.length > 0 ? Math.max(...products.map((product) => product.id)) + 1 : 1),
+    const payload = {
       nome: form.nome.trim(),
       preco: form.preco.trim(),
       categoria: form.categoria.trim(),
@@ -99,13 +115,21 @@ export default function AdminProducts() {
       modoUso: form.modoUso.trim()
     };
 
-    if (form.id === null) {
-      persistProducts([...products, payload]);
-    } else {
-      persistProducts(products.map((product) => (product.id === payload.id ? payload : product)));
-    }
+    try {
+      if (form.id === null) {
+        const created = await createProduct(payload);
+        setProducts((prev) => [created, ...prev]);
+      } else {
+        const updated = await updateProduct(form.id, payload);
+        setProducts((prev) => prev.map((product) => (product.id === updated.id ? updated : product)));
+      }
 
-    resetForm();
+      resetForm();
+    } catch {
+      setError("Não foi possível salvar o produto. Verifique se você está logado.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleEdit = (product: ProductRecord) => {
@@ -113,11 +137,19 @@ export default function AdminProducts() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const handleDelete = (productId: number) => {
+  const handleDelete = async (productId: number) => {
     const shouldDelete = window.confirm("Deseja excluir este produto?");
     if (!shouldDelete) return;
 
-    persistProducts(products.filter((product) => product.id !== productId));
+    try {
+      setIsLoading(true);
+      await deleteProduct(productId);
+      setProducts((prev) => prev.filter((product) => product.id !== productId));
+    } catch {
+      setError("Não foi possível excluir o produto.");
+    } finally {
+      setIsLoading(false);
+    }
 
     if (form.id === productId) {
       resetForm();
@@ -144,6 +176,12 @@ export default function AdminProducts() {
             Sair
           </button>
         </div>
+
+        {error && (
+          <div className="mb-4 bg-rose/10 border border-rose/20 text-rose rounded-xl px-4 py-3 text-sm">
+            {error}
+          </div>
+        )}
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div className="bg-white rounded-2xl p-6 shadow-sm">
@@ -270,6 +308,7 @@ export default function AdminProducts() {
               <div className="flex gap-3">
                 <button
                   type="submit"
+                  disabled={isLoading}
                   className="flex-1 bg-ocean text-white py-2.5 rounded-full hover:bg-aqua hover:text-charcoal transition"
                 >
                   {form.id === null ? "Salvar produto" : "Atualizar produto"}
@@ -288,6 +327,9 @@ export default function AdminProducts() {
           <div className="bg-white rounded-2xl p-6 shadow-sm">
             <h2 className="font-display text-xl text-charcoal mb-4">Produtos cadastrados</h2>
             <div className="space-y-3 max-h-[70vh] overflow-y-auto custom-scrollbar pr-1">
+              {isLoading && products.length === 0 && (
+                <p className="text-slate text-sm">Carregando produtos...</p>
+              )}
               {sortedProducts.map((product) => (
                 <div key={product.id} className="border border-mint/20 rounded-xl p-4">
                   <div className="flex items-start justify-between gap-3">

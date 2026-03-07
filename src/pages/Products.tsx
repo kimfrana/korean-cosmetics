@@ -14,9 +14,20 @@ export default function Products() {
   const [showFilters, setShowFilters] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<ProductView | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoadingProducts, setIsLoadingProducts] = useState(false);
 
   useEffect(() => {
-    setAllProducts(getProductsForView());
+    const loadProducts = async () => {
+      try {
+        setIsLoadingProducts(true);
+        const data = await getProductsForView();
+        setAllProducts(data);
+      } finally {
+        setIsLoadingProducts(false);
+      }
+    };
+
+    void loadProducts();
   }, []);
 
   const categorias = useMemo(
@@ -143,7 +154,11 @@ export default function Products() {
         <div className="w-full">
           {/* Contador de resultados */}
           <div className="mb-6 text-slate">
-            <p>Mostrando {sortedProducts.length} produto{sortedProducts.length !== 1 ? 's' : ''}</p>
+            {isLoadingProducts ? (
+              <p>Carregando produtos...</p>
+            ) : (
+              <p>Mostrando {sortedProducts.length} produto{sortedProducts.length !== 1 ? 's' : ''}</p>
+            )}
           </div>
 
           {/* Grid de produtos */}
